@@ -40,7 +40,7 @@ All fields except `labels`, `title` and per-asset `weight` are required. Keep `p
 - **Macro**: 2–3 paragraphs, 60–120 words each: central banks, inflation, growth, geopolitics; tie to the asset types in the watchlist.
 - **News**: 5–10 bullets, one sentence each, most market-moving first.
 - **Asset context**: 60–120 words. **Asset news**: 1–4 bullets, dated if possible.
-- **Alignment**: 1–3 paragraphs. Cover: overall risk level of the watchlist vs. the profile; each short-term goal (is money for it exposed to volatile assets?); each long-term goal (is the watchlist diversified enough for it?); concentration if weights exist. Neutral, descriptive tone — no orders.
+- **Alignment**: 1–3 paragraphs. Open with the stage 3 outcome from `signals.md`: which signals the goals or weights made more prudent and why, or one sentence saying none were and why. Then cover: overall risk level of the watchlist vs. the profile; each short-term goal (is money for it exposed to volatile assets?); each long-term goal (is the watchlist diversified enough for it?); milestones if any (purely informative); concentration if weights exist; currency mismatch between the reference currency and quote currencies when the FX move is material. Neutral, descriptive tone — no orders.
 - **Sources**: every figure in the report should trace to one of them.
 
 ## Disclaimer (built into the script per language)

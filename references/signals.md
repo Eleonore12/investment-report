@@ -36,7 +36,9 @@ Apply at most one downgrade per asset (`buy` → `neutral`, or `neutral` → `wa
 - **Concentration** (only when weights exist): asset weight > 25 % (conservative/balanced) or > 35 % (growth/aggressive), or a `very_high` asset > 10 % for conservative / > 20 % for balanced → downgrade a `buy` to `neutral` and flag it in the "Alignment" section.
 - **Horizon mismatch**: every goal is under 2 years and the asset is `very_high` → `wait`.
 
-No upgrades in stage 3: the profile can only make signals more prudent.
+No upgrades in stage 3: the profile can only make signals more prudent. Milestones (`goals.milestones`, no deadline) never trigger an adjustment.
+
+Keep track of the stage 3 outcome for the whole report: the list of assets downgraded, with the rule that applied, or "none". The "Alignment" section must report it explicitly, including when nothing was adjusted (say why, e.g. "No goal falls within the next 12 months, so no signal was made more prudent this week.").
 
 ## Writing the rationale
 

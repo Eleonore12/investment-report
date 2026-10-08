@@ -26,14 +26,14 @@ Output as **Word (.docx)**, **Markdown** or **HTML**, in **English, French, Span
 |---|---|
 | 1 | Report language and reference currency |
 | 2 | Risk profile: a self-assessment plus 3 calibration questions (drawdown reaction, horizon, share of wealth) |
-| 3 | Short-term (< 2 years) and long-term goals, with horizons |
+| 3 | Short-term (< 2 years) and long-term goals, with horizons and optional target amounts, then a consistency check with your horizon answer |
 | 4 | Assets to track, in free text ("MSCI World PEA, bitcoin, Boliden, defense sector"). Claude resolves each one to a precise instrument (ticker, exchange, ISIN) and asks you to confirm |
 | 5 | *Optional*: current portfolio weights, as percentages only |
 | 6 | Output format, report day, timezone, output folder |
 
 Your answers are saved as plain JSON in `~/.investment-report/profile.json` (see [`profile.example.json`](profile.example.json)). You can edit it by hand.
 
-**Nothing sensitive is collected:** no account numbers, no broker credentials, no amounts.
+**Nothing sensitive is collected:** no account numbers, no broker credentials, no position amounts. The only amounts stored are goal targets you choose to give (e.g. "40K for a down payment").
 
 ## Commands
 
@@ -54,7 +54,9 @@ The signals are deterministic rules, not vibes. Full detail is in [`references/s
 
 1. **Asset score** (−4 … +4): the sum of trend/technicals, fundamentals/valuation, 7-day catalysts and macro fit, each scored −1 / 0 / +1.
 2. **Profile thresholds**: a conservative profile needs a higher score to reach *Buy*. Very volatile assets (crypto, junior miners…) are capped for conservative and balanced profiles.
-3. **Goal checks**: a short-term goal within 12 months, a concentrated position or a horizon mismatch can downgrade a signal, never upgrade it.
+3. **Goal checks**: a short-term goal within 12 months, a concentrated position or a horizon mismatch can downgrade a signal, never upgrade it. The report always says whether this happened this week.
+
+Prices come from web searches, then from quote pages read directly (Boursorama, Google Finance, CoinGecko, issuer sites). Working quote pages are saved in your profile, so later runs are faster and more reliable. A figure that can't be verified is shown as `n/a`, never made up.
 
 ## Installation
 

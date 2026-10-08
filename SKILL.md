@@ -34,7 +34,7 @@ Follow `references/onboarding.md` exactly. In short:
 
 1. Language & currency
 2. Risk profile (self-assessment + 3 calibration questions → computed profile, shown to the user to confirm)
-3. Goals: short term (< 2 years) and long term, each with a horizon
+3. Goals: short term (< 2 years), long term (each with a horizon), optional target amounts and milestones; then a consistency check against the horizon answer from step 2
 4. Assets to track: free text → resolve each to a precise instrument (ticker, ISIN, exchange, type) → confirm the list
 5. Optional: current portfolio weights
 6. Output: format (docx / md / html), reference weekday, timezone, output directory
@@ -56,6 +56,19 @@ For each asset:
 - Technical levels if analysts mention them (supports/resistances, RSI, moving averages)
 
 Global: central banks and inflation, employment/growth data, geopolitics, plus one search per dominant theme in the watchlist (e.g. commodities, emerging markets, crypto regulation).
+
+**Price pass (mandatory).** Search snippets often miss today's quote. After the searches, for every asset (or theme proxy) still missing a verified price or weekly change, load WebFetch (via ToolSearch if deferred) and read a quote page directly, in this order:
+1. The asset's `quote_url` from the profile, if set.
+2. A quote page built from the ticker/ISIN, in parallel when possible:
+   - Euronext Paris ETFs and stocks: `https://www.boursorama.com/bourse/trackers/cours/1r<TICKER>/` (trackers) or `https://www.google.com/finance/quote/<TICKER>:EPA`
+   - US-listed: `https://www.google.com/finance/quote/<TICKER>:<NYSEARCA|NASDAQ|NYSE>` or `https://stockanalysis.com/etf/<ticker>/`
+   - Other exchanges: `https://www.google.com/finance/quote/<TICKER>:<EXCHANGE CODE>`
+   - Crypto: `https://www.coingecko.com/en/coins/<id>` (gives price and 7-day change)
+   - Gold / commodities: `https://goldprice.org/` style spot pages, LME or the issuer page of a tracking ETF
+   - Funds: the issuer's product page (NAV and date)
+3. A historical-data page (e.g. Investing.com "historical data") to compute the weekly change: `(last close / close 5 trading days earlier) − 1`.
+
+When a quote page works, write its URL back to the asset's `quote_url` in the profile at the end of the run (tell the user in one line), so the next run goes straight to it. Only when all of this fails, use `n/a` (FR: `n.d.`). In the summary table, an estimated change must be labelled as such (e.g. "≈ −4 % (estimé)").
 
 Rules:
 - Record source and as-of date for every figure. If a number cannot be found or verified, write `n/a` (FR: `n.d.`) and say so — never invent prices.
@@ -81,7 +94,7 @@ Report sections (the script lays them out; you provide the content):
 2. Macro view of the week — 2–3 paragraphs
 3. Market news — bullets
 4. Asset-by-asset analysis — price + weekly change, context, recent news, signal + rationale
-5. Alignment with your goals — 1–3 paragraphs: how the watchlist/portfolio fits the risk profile and each goal, concentration, short-term goals exposed to volatile assets
+5. Alignment with your goals — 1–3 paragraphs: how the watchlist/portfolio fits the risk profile and each goal, concentration, short-term goals exposed to volatile assets. Always state explicitly whether the goals changed any signal this week (which ones and why) or not (one sentence saying none did, and why — e.g. no deadline within 12 months)
 6. Signal summary table — Asset | Price | Change | Signal
 7. Sources and disclaimer
 
@@ -108,5 +121,5 @@ Report sections (the script lays them out; you provide the content):
 ## Guardrails
 
 - Every report and the final reply carry the disclaimer from `references/report-structure.md`. Signals are informational, generated from public information and a self-declared profile; they are not personalized investment advice.
-- Do not ask for or store account numbers, broker credentials, or absolute amounts. Weights are percentages only.
+- Do not ask for or store account numbers, broker credentials, or position amounts. Portfolio weights are percentages only. The only amounts allowed are goal targets the user gives (e.g. "50K for a down payment"), stored as the user wrote them.
 - Do not execute or suggest specific trade sizes.
