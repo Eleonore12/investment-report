@@ -59,14 +59,14 @@ Global: central banks and inflation, employment/growth data, geopolitics, plus o
 
 **Price pass (mandatory).** Search snippets often miss today's quote. After the searches, for every asset (or theme proxy) still missing a verified price or weekly change, load WebFetch (via ToolSearch if deferred) and read a quote page directly, in this order:
 1. The asset's `quote_url` from the profile, if set.
-2. A quote page built from the ticker/ISIN, in parallel when possible:
-   - Euronext Paris ETFs and stocks: `https://www.boursorama.com/bourse/trackers/cours/1r<TICKER>/` (trackers) or `https://www.google.com/finance/quote/<TICKER>:EPA`
-   - US-listed: `https://www.google.com/finance/quote/<TICKER>:<NYSEARCA|NASDAQ|NYSE>` or `https://stockanalysis.com/etf/<ticker>/`
-   - Other exchanges: `https://www.google.com/finance/quote/<TICKER>:<EXCHANGE CODE>`
-   - Crypto: `https://www.coingecko.com/en/coins/<id>` (gives price and 7-day change)
-   - Gold / commodities: `https://goldprice.org/` style spot pages, LME or the issuer page of a tracking ETF
-   - Funds: the issuer's product page (NAV and date)
-3. A historical-data page (e.g. Investing.com "historical data") to compute the weekly change: `(last close / close 5 trading days earlier) − 1`.
+2. A quote page built from the ticker/ISIN, fetched in parallel (verified to work with WebFetch):
+   - Euronext Paris ETFs: `https://www.boursorama.com/bourse/trackers/cours/1rT<TICKER>/` (e.g. `1rTWPEA`, `1rTPAEEM`); Paris stocks: `https://www.boursorama.com/cours/1rP<TICKER>/`. The page shows the last price, the previous close and recent daily closes.
+   - US-listed ETFs and stocks: `https://stockanalysis.com/etf/<ticker>/` (or `/stocks/<ticker>/`), and `.../history/` for daily closes.
+   - Crypto: `https://www.coingecko.com/en/coins/<id>` (price and 7-day change).
+   - Gold / commodities: a spot page (e.g. goldprice.org), the LME, or the stockanalysis page of a tracking ETF (GLD, CPER…).
+   - Funds and other exchanges: the issuer's product page (NAV and date).
+   - Google Finance pages do **not** render through WebFetch; don't use them.
+3. Compute the weekly change yourself from daily closes: `(last close / close 5 trading days earlier) − 1`. Prefer this over a "5-day change" displayed on the page, whose base is often unclear.
 
 When a quote page works, write its URL back to the asset's `quote_url` in the profile at the end of the run (tell the user in one line), so the next run goes straight to it. Only when all of this fails, use `n/a` (FR: `n.d.`). In the summary table, an estimated change must be labelled as such (e.g. "≈ −4 % (estimé)").
 
